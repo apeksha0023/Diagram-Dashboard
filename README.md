@@ -98,10 +98,6 @@ The dashboard allows users to:
 - Reset the view
 - Select electronic components from sidebar
 
-You can add screenshots here after running the project.
-
----
-
 
 
 
