@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 
-const DiagramViewer = ({ image }) => {
+const DiagramViewer = ({ image, selected }) => {
 
   const [zoom, setZoom] = useState(1);
 
-  const zoomIn = () => {
-    setZoom(zoom + 0.2);
-  };
-
-  const zoomOut = () => {
-    if (zoom > 0.4) {
-      setZoom(zoom - 0.2);
-    }
-  };
-
-  const reset = () => {
-    setZoom(1);
-  };
+  const zoomIn = () => setZoom(zoom + 0.2);
+  const zoomOut = () => zoom > 0.4 && setZoom(zoom - 0.2);
+  const reset = () => setZoom(1);
 
   return (
     <div className="viewer">
@@ -28,17 +18,31 @@ const DiagramViewer = ({ image }) => {
       </div>
 
       <div className="image-container">
-        {image ? (
-          <img
-            src={image}
-            alt="diagram"
-            style={{ transform: `scale(${zoom})` }}
-          />
-        ) : (
-          <p>No image uploaded</p>
-        )}
-      </div>
 
+        {image ? (
+          <div className="diagram-wrapper" style={{ transform: `scale(${zoom})` }}>
+
+            <img src={image} alt="diagram" />
+
+            {/* Glowing marker */}
+            {selected && (
+              <div
+                className="marker"
+                style={{
+                  left: `${selected.x}%`,
+                  top: `${selected.y}%`
+                }}
+              >
+                <span className="marker-label">{selected.name}</span>
+              </div>
+            )}
+
+          </div>
+        ) : (
+          <p>No diagram uploaded</p>
+        )}
+
+      </div>
     </div>
   );
 };

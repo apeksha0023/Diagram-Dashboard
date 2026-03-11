@@ -12,31 +12,68 @@ const Dashboard = () => {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-
-    getComponents().then((data) => {
+    const fetchComponents = async () => {
+      const data = await getComponents();
       setComponents(data);
-    });
+    };
 
+    fetchComponents();
   }, []);
 
+  const selectedComponent = components.find(
+    (item) => item.id === selected
+  );
+
   return (
-    <div className="dashboard">
+    <div className="app-container">
 
-      <UploadBox
-        setImage={setImage}
-        fileName={fileName}
-        setFileName={setFileName}
-      />
+      <div className="dashboard">
 
-      <div className="layout">
+        {/* Header */}
+        <header className="dashboard-header">
+          <h1>⚡ Diagram Dashboard</h1>
+          <p>
+            Upload and inspect circuit diagrams with detected components
+          </p>
+        </header>
 
-        <DiagramViewer image={image} />
+        {/* Upload Section */}
+        <section className="card">
+          <UploadBox
+            setImage={setImage}
+            fileName={fileName}
+            setFileName={setFileName}
+          />
+        </section>
 
-        <ComponentList
-          components={components}
-          selected={selected}
-          setSelected={setSelected}
-        />
+        {/* Selected Component */}
+        {selectedComponent && (
+          <div className="selected-info">
+            Selected Component: <strong>{selectedComponent.name}</strong>
+          </div>
+        )}
+
+        {/* Main Layout */}
+        <div className="layout">
+
+          {/* Diagram Viewer */}
+          <section className="viewer card">
+            <DiagramViewer
+              image={image}
+              selected={selectedComponent}
+            />
+          </section>
+
+          {/* Component List */}
+          <section className="sidebar card">
+            <ComponentList
+              components={components}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </section>
+
+        </div>
 
       </div>
 
